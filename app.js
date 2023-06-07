@@ -4,7 +4,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
-const MongoConnect = require('./util/database').MongoConnect
+const MongoConnect = require('./util/database').MongoConnect;
+const User = require('./models/user');
 
 const app = express();
 
@@ -14,15 +15,13 @@ app.set('views', 'views');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
-const User = require('./models/user')
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findById('647ff18401a04a0b18e3005b')
+  User.findById('648024a9d0a04704b5571b1b')
     .then(user => {
-      req.user = new User (user.username , user.email , user.cart , user._id);
+      req.user = new User(user.name, user.email, user.cart, user._id);
       next();
     })
     .catch(err => console.log(err));
@@ -34,6 +33,6 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 MongoConnect ( () =>{
-  app.listen(3000,(result) =>
-  console.log("Server listening on port 3000"))
+  app.listen(8000,(result) =>
+  console.log("Server listening on port 8000"))
 })
