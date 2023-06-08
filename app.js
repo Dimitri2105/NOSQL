@@ -19,9 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findById('648024a9d0a04704b5571b1b')
+  User.findById('64814587d5ba4503e6dce33f')
     .then(user => {
       req.user = new User(user.name, user.email, user.cart, user._id);
+      // req.user = user
       next();
     })
     .catch(err => console.log(err));
@@ -33,6 +34,6 @@ app.use(shopRoutes);
 app.use(errorController.get404);
 
 MongoConnect ( () =>{
-  app.listen(8000,(result) =>
-  console.log("Server listening on port 8000"))
+  app.listen(3000,(result) =>
+  console.log("Server listening on port 3000"))
 })
